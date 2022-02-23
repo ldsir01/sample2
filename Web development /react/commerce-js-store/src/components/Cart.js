@@ -42,6 +42,7 @@ const Cart = ({ cart }) => {
       <Link to="/">HOME</Link>
       <h1>This is cart</h1>
       {isEmpty ? renderCart() : renderEmptyCart()}
+      <Link to="/checkout">Checkout</Link>
     </div>
   );
 };

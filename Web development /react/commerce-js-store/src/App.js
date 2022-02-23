@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Cart from "./components/Cart";
+import CheckOut from "./components/CheckOut";
 import ProductList from "./components/ProductList";
 import commerce from "./lib/commerce";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
+
+  const [order, setOrder] = useState({});
+  const [errorMessage, setErorrMessage] = useState({});
 
   const fetchProducts = async () => {
     try {
@@ -36,6 +40,21 @@ function App() {
     featchCart();
   }, []);
 
+  const handleCaptureCart = async (checkoutToken, newOrder) => {
+    try {
+      const { incomingOrder } = commerce.checkout.capture(
+        checkoutToken.id,
+        newOrder
+      );
+      console.log(incomingOrder);
+      setOrder(incomingOrder);
+      // refreshCart();
+    } catch (error) {
+      setErorrMessage(error.data.error.message);
+      console.log(errorMessage);
+    }
+  };
+
   return (
     <>
       <Routes>
@@ -49,6 +68,12 @@ function App() {
           }
         />
         <Route path="/cart" element={<Cart cart={cart} />} />
+        <Route
+          path="/checkout"
+          element={
+            <CheckOut cart={cart} handleCaptureCart={handleCaptureCart} />
+          }
+        />
       </Routes>
     </>
   );
