@@ -13,20 +13,20 @@ using ll = long long;
 
 void solve(vector<long long> &v, ll N)
 {
-	for (int i = 0; i < N ; i++)
+	ll temp = 0;
+
+	for (ll i = v.size() - 1 ; i >= 0 ; i--)
 	{
-		if (v[i] == 0 || v[i] == 1) continue;
+		temp = max(temp, v[i]);
+
+		if (temp > 0)
+		{
+			v[i] = 1;
+			temp--;
+		}
 		else
 		{
-			ll creame_length = v[i];
-			ll idx = i;
-
-
-			while ((creame_length--) && idx >= 0)
-			{
-				v[idx] = 1;
-				idx--;
-			}
+			v[i] = 0;
 		}
 	}
 
@@ -57,8 +57,6 @@ int main()
 
 		solve(v , N);
 	}
-
-
 }
 
 
