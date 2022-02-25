@@ -1,6 +1,5 @@
 import postTodo from '../models/todoSchema.js';
 
-
 export const getTodos = async (req, res) => {
     try {
         const todos = await postTodo.find();

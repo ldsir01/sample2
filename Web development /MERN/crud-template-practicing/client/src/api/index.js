@@ -1,5 +1,5 @@
 import axios from "axios";
 
-const urlBase = "";
+const url = "http://localhost:5500/todo";
 
-axios.get(urlBase);
+export const featchTodos = () => axios.get(url);
