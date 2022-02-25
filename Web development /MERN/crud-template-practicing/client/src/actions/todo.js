@@ -8,3 +8,12 @@ export const getTodos = () => async (dispatch) => {
     console.log(error.message);
   }
 };
+
+export const createTodo = (todo) => async (dispatch) => {
+  try {
+    const { data } = await api.createTodo(todo);
+    dispatch({ type: "CREATE_TODO", payload: data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

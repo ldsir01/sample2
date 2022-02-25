@@ -1,37 +1,36 @@
 import React, { useEffect, useState } from "react";
 import Todo from "./Todo/Todo";
-import { useSelector } from "react-redux";
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Checkbox,
-  IconButton,
-} from "@mui/material";
-
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import { List } from "@mui/material";
+import { createTodo } from "../../actions/todo";
 
 const Todos = () => {
   const todos = useSelector((state) => state.todoReducer);
-  const [checked, setChecked] = useState([0]);
-  console.log(todos);
+  const [todoData, setTodoData] = useState({
+    id: "",
+    title: "",
+    completed: false,
+  });
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const dispatch = useDispatch();
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+  useEffect(() => {
+    console.log(todos);
+  }, [todos]);
 
-    setChecked(newChecked);
-  };
+  // console.log(todos);
 
   // if (!todos) return "Loading ... ";
+
+  // console.log(todo);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(todoData);
+    setTodoData({ ...todoData, title: "" });
+
+    dispatch(createTodo(todoData));
+  };
 
   return (
     <div>
@@ -43,7 +42,13 @@ const Todos = () => {
         })}
       </List>
       <form>
-        <input type="text" placeholder="Add Todo" />
+        <input
+          type="text"
+          placeholder="Add Todo"
+          value={todoData.title}
+          onChange={(e) => setTodoData({ ...todoData, title: e.target.value })}
+        />
+        <button onClick={(e) => handleSubmit(e)}>Add</button>
       </form>
     </div>
   );

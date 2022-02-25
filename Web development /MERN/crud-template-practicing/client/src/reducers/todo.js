@@ -4,7 +4,7 @@ export const todoReducer = (todos = [], action) => {
       return action.payload;
 
     case "CREATE_TODO":
-      return todos;
+      return [...todos, action.payload];
 
     default:
       return todos;
