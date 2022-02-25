@@ -13,10 +13,9 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div>
-      Hemlo
+    <>
       <Todos />
-    </div>
+    </>
   );
 }
 
