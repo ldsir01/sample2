@@ -28,9 +28,13 @@ export const updateTodo = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).json({ message: "There is no todo with this ID" });
 
-  const updatedTodo = await postTodo.findByIdAndUpdate(_id, todo, {
-    new: true,
-  });
+  const updatedTodo = await postTodo.findByIdAndUpdate(
+    _id,
+    { ...todo, _id },
+    {
+      new: true,
+    }
+  );
 
   res.json(updatedTodo);
 };
