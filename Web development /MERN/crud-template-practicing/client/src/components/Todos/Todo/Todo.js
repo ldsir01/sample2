@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListItem, ListItemText, IconButton } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
 
-const Todo = ({ todo, labelId }) => {
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { deleteTodo } from "../../../actions/todo";
+
+const Todo = ({ todo, currentID, setCurrentID }) => {
+  const dispatch = useDispatch();
+  const handleDelete = (e) => {
+    e.preventDefault();
+    dispatch(deleteTodo(todo._id));
+  };
+
   return (
-    <ListItem
-      key={todo.title}
-      secondaryAction={
-        <IconButton edge="end" aria-label="comments">
-          <DeleteIcon />
-        </IconButton>
-      }
-      disablePadding
-    >
-      <ListItemText id={labelId} primary={`${todo.title}`} />
+    <ListItem disablePadding>
+      <ListItemText primary={`${todo.title}`} />
+      <IconButton aria-label="edit" onClick={() => setCurrentID(todo._id)}>
+        <ModeEditIcon />
+      </IconButton>
+      <IconButton aria-label="delete" onClick={(e) => handleDelete(e)}>
+        <DeleteIcon />
+      </IconButton>
     </ListItem>
   );
 };

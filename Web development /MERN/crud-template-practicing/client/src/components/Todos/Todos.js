@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import Todo from "./Todo/Todo";
 import { useDispatch, useSelector } from "react-redux";
 import { List } from "@mui/material";
-import { createTodo } from "../../actions/todo";
+import { createTodo, updateTodo } from "../../actions/todo";
 
 const Todos = () => {
   const todos = useSelector((state) => state.todoReducer);
+  const [currentID, setCurrentID] = useState(null);
+
+  const todo = useSelector((state) =>
+    currentID ? state.todoReducer.find((todo) => todo._id === currentID) : null
+  );
+
   const [todoData, setTodoData] = useState({
     id: "",
     title: "",
     completed: false,
   });
+
+  useEffect(() => {
+    setTodoData(todo);
+  }, [todo, currentID]);
 
   const dispatch = useDispatch();
 
@@ -18,37 +28,44 @@ const Todos = () => {
     console.log(todos);
   }, [todos]);
 
-  // console.log(todos);
-
-  // if (!todos) return "Loading ... ";
-
-  // console.log(todo);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(todoData);
+
     setTodoData({ ...todoData, title: "" });
 
-    dispatch(createTodo(todoData));
+    if (currentID) {
+      dispatch(updateTodo(currentID, todoData));
+      setCurrentID(null);
+    } else {
+      dispatch(createTodo(todoData));
+    }
   };
 
   return (
     <div>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         {todos.map((todo) => {
-          // console.log(todo.title);
           const labelId = `checkbox-list-label-${todo}`;
-          return <Todo key={todo._id} todo={todo} labelId={labelId} />;
+          return (
+            <Todo
+              setCurrentID={setCurrentID}
+              currentID={currentID}
+              key={todo._id}
+              todo={todo}
+              labelId={labelId}
+            />
+          );
         })}
       </List>
       <form>
         <input
           type="text"
           placeholder="Add Todo"
-          value={todoData.title}
+          value={todoData ? todoData.title : ""}
           onChange={(e) => setTodoData({ ...todoData, title: e.target.value })}
         />
-        <button onClick={(e) => handleSubmit(e)}>Add</button>
+        <button onClick={(e) => handleSubmit(e)}>ADD</button>
       </form>
     </div>
   );
